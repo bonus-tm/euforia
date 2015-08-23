@@ -9,21 +9,21 @@ class Market(Event):
     def invoke(self):
         if data.embargo:
             data.probability['Market'] = 0
-            print("   ЧП! Экономическая блокада!\n")
+            say.line("   ЧП! Экономическая блокада!\n")
         else:
             data.probability['Market'] = 100
-            print("   Торговля - двигатель прогресса\n")
+            say.line("   Торговля - двигатель прогресса\n")
         super().invoke()
     
     
     def start(self):
         """docstring for start"""
         complete = False
-        print("\n")
+        say.line("\n")
         while not complete:
             act.erase_line(2)
             self.broker_wants = round(data.money * random.uniform(0.2, 0.99))
-            print("   Маклер просит {:>10n} руб.".format(self.broker_wants))
+            say.line("   Маклер просит {:>10n} руб.".format(self.broker_wants))
             if ask.yesno("Желаете использовать маклера?"):
                 complete = self.broker()
                 continue
@@ -44,8 +44,8 @@ class Market(Event):
         debet = data.money
         credit = 0
         act.erase_line()
-        print("            (+) Покупайте / Продавайте (-):")
-        print("Золото (кг), земля (га), зерно (т), рабочие, солдаты (чел)? ", end='')
+        say.line("            (+) Покупайте / Продавайте (-):")
+        say.word("Золото (кг), земля (га), зерно (т), рабочие, солдаты (чел)? ")
         answer = re.search(r"""(?P<gold>[-+]?\d+)     # 1 золото
                                ([^0-9+-]+)? # delimiter
                                (?P<land>[-+]?\d+)?    # 3 земля

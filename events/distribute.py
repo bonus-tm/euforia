@@ -4,7 +4,7 @@ import data, ask, act
 from event import Event
 
 class Distribute(Event):
-    """docstring for Distribute"""
+    """Распределение зерна"""
     
     def start(self):
         """docstring for start"""
@@ -21,7 +21,7 @@ class Distribute(Event):
         
         data.resources['corn'] -= data.corn_for_food
         data.resources['corn'] -= data.corn_for_seed
-        print(msg.format(data.resources['corn']))
+        say.line(msg.format(data.resources['corn']))
     
     
     def automatically(self):
@@ -29,21 +29,12 @@ class Distribute(Event):
         
         data.corn_for_food = self.min_for_food
         data.corn_for_seed = self.min_for_seed
-        act.erase_line()
-        print("--> Выделена норма: {:>10n} тонн зерна".format(self.min_for_food + self.min_for_seed))
+        say.erase_line()
+        say.line("--> Выделена норма: {:>10n} тонн зерна".format(self.min_for_food + self.min_for_seed))
         
     
     def manually(self):
         """ Сколько зерна на еду, сколько на посев """
         
-        got_distribution = False
-        while not got_distribution:
-            act.erase_line()
-            print("Сколько тонн зерна на еду, сколько на посев? ", end='')
-            answer = re.split('[^0-9]+', input().strip())
-            if answer[0].isnumeric() and answer[1].isnumeric():
-                data.corn_for_food = int(answer[0])
-                data.corn_for_seed = int(answer[1])
-                if data.corn_for_food + data.corn_for_seed <= data.resources['corn']:
-                    got_distribution = True
-
+        [data.corn_for_food, data.corn_for_seed] = ask.corn(data.resources['corn'])
+        

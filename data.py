@@ -1,5 +1,5 @@
 # Модуль хранения основных данных и их вывода
-import random
+import random, datetime
 
 # вероятности начала событий
 probability = {
@@ -12,7 +12,7 @@ probability = {
 }
 
 # основные данные
-date = 1985
+date = datetime.date.today().year
 # год правления
 year = 0
 king_age = 15

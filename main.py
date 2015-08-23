@@ -46,6 +46,5 @@ while data.king_hp > 0 and data.anger < 100:
         break
 # end of main loop
 
-print("health", data.king_hp)
-print("Year", data.year, " king is dead")
+act.debug("Год правления {:n}, здоровье короля {:n}".format(data.year, data.king_hp))
 
