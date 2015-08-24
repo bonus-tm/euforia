@@ -9,6 +9,7 @@ def default_input_func():
 #
 def erase_line(lines=1):
     """ Удалить lines последних строк """
+    
     CURSOR_UP_ONE = '\x1b[1A'
     ERASE_LINE = '\x1b[2K'
     for i in range(0, lines):
@@ -17,6 +18,7 @@ def erase_line(lines=1):
 #
 def yesno(prompt="Вы согласны?", default=True, input_func=default_input_func):
     """ Запрос да/нет, либо 1/0 """
+    
     say.word(prompt, "(1/0)")
     answer = input_func()
     if answer == "":
@@ -29,35 +31,24 @@ def yesno(prompt="Вы согласны?", default=True, input_func=default_inpu
 #
 def number(prompt,
            max,
-           min=0,
-           default=0,
-           error_max="В казне нет столько денег!",
-           error_min=False,
-           input_func=default_input_func,
-           try_once=False):
+           error_msg="В казне нет столько денег!",
+           input_func=default_input_func):
     """ Запрос числа """
-    done = False
-    while not done:
-        say.word(prompt)
-        text = input_func()
-        try:
-            number = int(text)
-            done = True
-            if number > max:
-                number = max
-                done = try_once
-                say.line(error_max)
-            elif number < min:
-                number = min
-                done = try_once
-                if error_min:
-                    say.line(error_min)
-                else:
-                    say.line(error_max)
-        except ValueError:
-            number = default
-            done = True
-    return number
+    
+    say.word(prompt)
+    text = input_func()
+    error = False
+    msg = ""
+    try:
+        number = int(text)
+        if number > max:
+            number = max
+            error = True
+            msg = error_msg
+        return (number, error, msg)
+    except ValueError:
+        return (-1, True, "Это не число!")
+        
 
 #
 def corn(max, input_func=default_input_func, try_once=False):
