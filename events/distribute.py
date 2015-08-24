@@ -6,6 +6,7 @@ from event import Event
 class Distribute(Event):
     """Распределение зерна"""
     
+    #
     def start(self):
         """docstring for start"""
         self.min_for_food = data.resources['peasant'] + data.resources['soldier'] + 1
@@ -23,7 +24,7 @@ class Distribute(Event):
         data.resources['corn'] -= data.corn_for_seed
         say.line(msg.format(data.resources['corn']))
     
-    
+    #
     def automatically(self):
         """ Дефолтная раздача """
         
@@ -32,7 +33,7 @@ class Distribute(Event):
         say.erase_line()
         say.line("--> Выделена норма: {:>10n} тонн зерна".format(self.min_for_food + self.min_for_seed))
         
-    
+    #
     def manually(self):
         """ Сколько зерна на еду, сколько на посев """
         

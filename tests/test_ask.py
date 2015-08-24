@@ -1,10 +1,8 @@
-
-import sys
+import sys, unittest
 import say
-sys.path.append('..')
 
+sys.path.append('..')
 import data, ask
-import unittest
 
         
 class TestAskFunctions(unittest.TestCase):
@@ -12,6 +10,16 @@ class TestAskFunctions(unittest.TestCase):
     
     def setUp(self):
         pass
+    
+    # рандом
+    def test_dice(self):
+        probability = 40
+        self.assertTrue(ask.dice(probability, random_func=lambda *args: 10))
+        self.assertFalse(ask.dice(probability, random_func=lambda *args: 90))
+    
+    def test_rand(self):
+        self.assertEqual(50, ask.rand(10, 1000, random_func=lambda *args: 50))
+    
     
     # да-нет
     def test_yesno(self):

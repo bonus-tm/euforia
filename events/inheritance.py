@@ -17,7 +17,7 @@ class Inheritance(Event):
             'soldier': round(data.resources['soldier'] * random.uniform(0.1, 2))
         }
         
-        print("\nВам досталось наследство:")
+        say.line("\nВам досталось наследство:")
         data.print_small_table(money, resources)
         
         data.money += money

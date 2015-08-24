@@ -1,10 +1,9 @@
-# митрополит
-import random
-import data, ask, act
+# Митрополит
+import data, ask, say, act
 from event import Event
 
 class Church(Event):
-    """ митрополит """
+    """ Митрополит """
     
     money = 0
     buildings = 0
@@ -18,39 +17,42 @@ class Church(Event):
     nice = ['Вы чрезмерно скупы, ваше величество!']
     greedy = ['Вы что, насмехаетесь?! Скряга!']
     
-    
+    #
     def invoke(self):
         """docstring for invoke"""
         if data.money == 0:
             data.probability['Church'] = 0
         else:
-            data.probability['Church'] = random.randrange(10, 50)
+            data.probability['Church'] = ask.rand(10, 50)
         super().invoke()
     
-    
+    #
     def start(self):
-        """  """
-        print("Митрополит ожидает средства на постройку храма.")
+        """ Выделение средств на храм """
+        say.line("Митрополит ожидает средства на постройку храма.")
         data.treasury()
-        spend = ask.number("Сколько выделяете?", data.money)
+        error = True
+        while error:
+            spend, error, msg = ask.number("Сколько выделяете?", data.money)
+            if error:
+                say.line(msg)
         
         percent = spend / data.money * 100
         act.clear_screen()
         if percent > 40:
-            print(random.choice(self.generous))
+            say.line(ask.choice(self.generous))
         elif percent > 20:
-            print(random.choice(self.nice))
+            say.line(ask.choice(self.nice))
         else:
-            print(random.choice(self.greedy))
+            say.line(ask.choice(self.greedy))
         
         data.money -= spend
         self.money += spend
         
         self.build()
     
-    
+    #
     def build(self):
-        """docstring for build"""
         while self.money > self.price:
-            print(" -=- Воздвигнут храм! -=-")
+            say.line(" -=- Воздвигнут храм! -=-")
             self.money -= self.price

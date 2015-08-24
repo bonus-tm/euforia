@@ -1,5 +1,6 @@
 # Модуль хранения основных данных и их вывода
-import random, datetime
+import datetime
+import ask
 
 # вероятности начала событий
 probability = {
@@ -46,15 +47,15 @@ deserters = 0
 
 
 # казна
-money = random.randrange(50, 1000)
+money = ask.rand(50, 1000)
 
 # в государстве - ресурсы, начальные значения
 resources = {
     'gold': 0,
-    'land': random.randrange(50, 150),
-    'corn': random.randrange(400, 1000),
-    'peasant': random.randrange(50, 150),
-    'soldier': random.randrange(50, 150)
+    'land': ask.rand(50, 150),
+    'corn': ask.rand(400, 1000),
+    'peasant': ask.rand(50, 150),
+    'soldier': ask.rand(50, 150)
 }
  # диапазон колебаний min-max, множитель биржи
 limits = {
@@ -66,11 +67,11 @@ limits = {
 }
 # текущие цены, начальные значения
 prices = {
-    'gold':    random.randrange(limits['gold'][0],    limits['gold'][1]),
-    'land':    random.randrange(limits['land'][0],    limits['land'][1]),
-    'corn':    random.randrange(limits['corn'][0],    limits['corn'][1]),
-    'peasant': random.randrange(limits['peasant'][0], limits['peasant'][1]),
-    'soldier': random.randrange(limits['soldier'][0], limits['soldier'][1])
+    'gold':    ask.rand(limits['gold'][0],    limits['gold'][1]),
+    'land':    ask.rand(limits['land'][0],    limits['land'][1]),
+    'corn':    ask.rand(limits['corn'][0],    limits['corn'][1]),
+    'peasant': ask.rand(limits['peasant'][0], limits['peasant'][1]),
+    'soldier': ask.rand(limits['soldier'][0], limits['soldier'][1])
 }
 history = []
 

@@ -1,4 +1,3 @@
-import random
 import data, ask
 
 class Event(object):
@@ -9,17 +8,18 @@ class Event(object):
     
     
     def invoke(self):
-        """docstring for invoke"""
-        dice = random.randrange(100)
+        """ Вызвать событие, если сработала вероятность """
+        
         ev = self.__class__.__name__
         # print("DEBUG: invoking Event '{}', probability {}, dice {}"
         #       .format(ev, data.probability[ev], dice))
-        if dice < data.probability[ev]:
+        if ask.dice(data.probability[ev]):
             self.start()
     
     
     def start(self):
         """docstring for start"""
-        print("Event started")
+        
+        say.line("Event started")
     
     

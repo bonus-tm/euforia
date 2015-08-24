@@ -1,5 +1,5 @@
 # Модуль запроса данных
-import os, re
+import os, re, random
 import say, data
 
 #
@@ -7,13 +7,31 @@ def default_input_func():
     return input().strip().lower()
 
 #
-def erase_line(lines=1):
-    """ Удалить lines последних строк """
+def default_random_func(*args):
+    return random.randrange(*args)
+
+#
+def default_random_choice_func(seq):
+    return random.choice(seq)
+
+#
+def dice(probability, random_func=default_random_func):
+    """ Случилось событие или нет — возвращает True или False """
     
-    CURSOR_UP_ONE = '\x1b[1A'
-    ERASE_LINE = '\x1b[2K'
-    for i in range(0, lines):
-        say.line(CURSOR_UP_ONE + ERASE_LINE + CURSOR_UP_ONE)
+    return random_func(100) < probability
+
+#
+def rand(min, max, random_func=default_random_func):
+    """ Возвращает случайное число между min и max """
+    
+    return random_func(min, max)
+
+#
+def choice(seq, random_func=default_random_choice_func):
+    """ Возвращает случайный элемент последовательности """
+    
+    return random_func(seq)
+    
 
 #
 def yesno(prompt="Вы согласны?", default=True, input_func=default_input_func):
