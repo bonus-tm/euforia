@@ -3,20 +3,20 @@ import os
 
 class Say():
     """ Вывод простых строк """
-    def __init__(self):
-        pass
+    def __init__(self, print_func=print):
+        self.print = print_func
         
     #
     def line(self, *args):
         """ Напечатать аргументы и поставить перенос строки в конце """
     
-        print(*args)
+        self.print(*args)
 
     #
     def word(self, *args):
         """ Без переноса строки в конце """
     
-        print(end=" ", *args)
+        self.print(end=" ", *args)
 
     #
     def erase_line(self, lines=1):

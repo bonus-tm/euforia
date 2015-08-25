@@ -1,3 +1,4 @@
+from debug import debug
 
 class Event(object):
     """ События
@@ -10,20 +11,20 @@ class Event(object):
         self.say = say
         self.ask = ask
     
+    #
+    def debug(self, msg):
+        debug(msg, prefix=self.__class__.__name__)
     
+    #
     def invoke(self):
         """ Запускается каждый раз и проверяет вероятность события """
         
         ev = self.__class__.__name__
-        # print("DEBUG: invoking Event '{}', probability {}, dice {}"
-        #       .format(ev, data.probability[ev], dice))
         if self.ask.dice(self.data.probability[ev]):
             self.start()
     
-    
+    #
     def start(self):
         """ Запуск самого события """
         
         self.say.line("Event started")
-    
-    

@@ -1,8 +1,7 @@
 import sys, unittest
 
-from say import Say
-
 sys.path.append('..')
+from say import Say
 from data import Data
 # from info import Info
 from ask import Ask
@@ -13,7 +12,7 @@ class TestAskFunctions(unittest.TestCase):
     """Тестирование ввода данных"""
     
     def setUp(self):
-        self.say = Say()
+        self.say = Say(lambda *ar, **kw: False)
         self.ask = Ask(self.say)
     
     # рандом
