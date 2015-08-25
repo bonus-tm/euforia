@@ -1,25 +1,29 @@
-import data, ask
 
 class Event(object):
-    """docstring for Event"""
+    """ События
+    На каждой итерации (каждый год) вызывается метод invoke каждого события.
+    Если срабатывает вероятность наступления этого события, то вызвать start.
+    """
     
-    def __init__(self):
-        super(Event, self).__init__()
+    def __init__(self, data, say, ask):
+        self.data = data
+        self.say = say
+        self.ask = ask
     
     
     def invoke(self):
-        """ Вызвать событие, если сработала вероятность """
+        """ Запускается каждый раз и проверяет вероятность события """
         
         ev = self.__class__.__name__
         # print("DEBUG: invoking Event '{}', probability {}, dice {}"
         #       .format(ev, data.probability[ev], dice))
-        if ask.dice(data.probability[ev]):
+        if self.ask.dice(self.data.probability[ev]):
             self.start()
     
     
     def start(self):
-        """docstring for start"""
+        """ Запуск самого события """
         
-        say.line("Event started")
+        self.say.line("Event started")
     
     

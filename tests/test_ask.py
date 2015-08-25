@@ -1,36 +1,46 @@
 import sys, unittest
-import say
+
+from say import Say
 
 sys.path.append('..')
-import data, ask
+from data import Data
+# from info import Info
+from ask import Ask
+
 
         
 class TestAskFunctions(unittest.TestCase):
     """Тестирование ввода данных"""
     
     def setUp(self):
-        pass
+        self.say = Say()
+        self.ask = Ask(self.say)
     
     # рандом
     def test_dice(self):
         probability = 40
-        self.assertTrue(ask.dice(probability, random_func=lambda *args: 10))
-        self.assertFalse(ask.dice(probability, random_func=lambda *args: 90))
+        self.assertTrue(self.ask.dice(probability, random_func=lambda *args: 10))
+        self.assertFalse(self.ask.dice(probability, random_func=lambda *args: 90))
     
     def test_rand(self):
-        self.assertEqual(50, ask.rand(10, 1000, random_func=lambda *args: 50))
+        self.assertTrue(990 <= self.ask.rand(990, 1000) <= 1000)
+        self.assertIsInstance(self.ask.rand(990, 1000), int)
+    
+    def test_frand(self):
+        self.assertTrue(0.999 <= self.ask.frand(0.999, 1.001) <= 1.001)
+        self.assertIsInstance(self.ask.frand(0.1, 10), float)
     
     
     # да-нет
     def test_yesno(self):
         for answer in ["", "1", "y", "Yes", "yes", "YES", "111"]:
             with self.subTest("Test for Yes", answer=answer):
-                self.assertTrue(ask.yesno(prompt="Yes?", default=True, input_func=lambda: answer.lower()),
+                self.assertTrue(self.ask.yesno(prompt="Yes?", default=True, input_func=lambda: answer.lower()),
                                 msg="'{:s}' should be Yes".format(answer))
         
         for answer in ["0", "n", "No", "000", "wtf", "1dg6seq112"]:
             with self.subTest("Test for No", answer=answer):
-                self.assertFalse(ask.yesno(prompt="Yes?", default=True, input_func=lambda: answer.lower()),
+                self.assertFalse(self.ask.yesno(prompt="Yes?", default=True, input_func=lambda: answer.lower()),
                                 msg="'{:s}' should be No".format(answer))
         
     
@@ -39,7 +49,7 @@ class TestAskFunctions(unittest.TestCase):
         max = 100
         for i in ["56", " 56   "]:
             with self.subTest("Good numbers", i=i):
-                num, error, msg = ask.number("Number?", max, input_func=lambda: i)
+                num, error, msg = self.ask.number("Number?", max, input_func=lambda: i)
                 self.assertEqual(num, 56, msg="Got wrong number")
                 self.assertFalse(error, msg="'error' param isn't False")
                 self.assertEqual(msg, "", msg="'msg' param not empty string")
@@ -48,7 +58,7 @@ class TestAskFunctions(unittest.TestCase):
         max = 100
         for i in ["56.6", " 56,5   ", "56 56 ", "wtf ", "56wtf", "wtf56"]:
             with self.subTest("Good numbers", i=i):
-                num, error, msg = ask.number("Number?", max, input_func=lambda: i)
+                num, error, msg = self.ask.number("Number?", max, input_func=lambda: i)
                 self.assertEqual(num, -1, msg="Is '{:s}' number?".format(i))
                 self.assertTrue(error, msg="'error' param is False, should be True")
                 self.assertEqual(msg, "Это не число!", msg="'msg' is wrong")
@@ -58,32 +68,35 @@ class TestAskFunctions(unittest.TestCase):
         error_msg = "more than max"
         for i in ["120", " 120   "]:
             with self.subTest("Number more than max", i=i):
-                num, error, msg = ask.number("Number?", max, error_msg=error_msg, input_func=lambda: i)
+                num, error, msg = self.ask.number("Number?", max, error_msg=error_msg, input_func=lambda: i)
                 self.assertEqual(num, max, msg="Is '{:s}' a number?".format(i))
                 self.assertTrue(error, msg="'error' param is False, should be True")
                 self.assertEqual(msg, error_msg, msg="'msg' is wrong")
     
 
     # ввод распределения зерна
+    @unittest.skip("Corn moved to Disrtibute class")
     def test_corn(self):
         max = 1000
         for answer in ["110 230", "110,  230", "  110 -   230.   ", "110. 230. "]:
             with self.subTest("Test corn", answer=answer):
-                [food, seed] = ask.corn(max, input_func=lambda: answer, try_once=True)
+                [food, seed] = self.ask.corn(max, input_func=lambda: answer, try_once=True)
                 self.assertTrue(food == 110 and seed == 230)
     
+    @unittest.skip("Corn moved to Disrtibute class")
     def test_corn_food_not_enough(self):
         max = 1000
         for answer in ["1100 230", "1100,  230", "  1100 -   230.   ", "1100. 230. "]:
             with self.subTest("Test corn more food than max", answer=answer):
-                [food, seed] = ask.corn(max, input_func=lambda: answer, try_once=True)
+                [food, seed] = self.ask.corn(max, input_func=lambda: answer, try_once=True)
                 self.assertTrue(food < 0 and seed < 0)
     
+    @unittest.skip("Corn moved to Disrtibute class")
     def test_corn_seed_not_enough(self):
         max = 1000
         for answer in ["950 230", "950,  230", "  950 -   230.   ", "950. 230. "]:
             with self.subTest("Test corn more food than max", answer=answer):
-                [food, seed] = ask.corn(max, input_func=lambda: answer, try_once=True)
+                [food, seed] = self.ask.corn(max, input_func=lambda: answer, try_once=True)
                 self.assertTrue(food == 950 and seed == 50)
     
 
