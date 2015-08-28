@@ -17,16 +17,17 @@ class TestAskFunctions(unittest.TestCase):
     
     # рандом
     def test_dice(self):
-        probability = 40
-        self.assertTrue(self.ask.dice(probability, random_func=lambda *args: 10))
-        self.assertFalse(self.ask.dice(probability, random_func=lambda *args: 90))
+        probability = 90
+        self.ask.random_int_func = lambda *args: 10
+        self.assertTrue(self.ask.dice(probability))
+        
+        self.ask.random_int_func = lambda *args: 99
+        self.assertFalse(self.ask.dice(probability))
     
+    
+    # фигня
     def test_rand(self):
-        self.assertTrue(990 <= self.ask.rand(990, 1000) <= 1000)
         self.assertIsInstance(self.ask.rand(990, 1000), int)
-    
-    def test_frand(self):
-        self.assertTrue(0.999 <= self.ask.frand(0.999, 1.001) <= 1.001)
         self.assertIsInstance(self.ask.frand(0.1, 10), float)
     
     
@@ -34,12 +35,14 @@ class TestAskFunctions(unittest.TestCase):
     def test_yesno(self):
         for answer in ["", "1", "y", "Yes", "yes", "YES", "111"]:
             with self.subTest("Test for Yes", answer=answer):
-                self.assertTrue(self.ask.yesno(prompt="Yes?", default=True, input_func=lambda: answer.lower()),
+                self.ask.input_func = lambda: answer.lower()
+                self.assertTrue(self.ask.yesno(prompt="Yes?", default=True),
                                 msg="'{:s}' should be Yes".format(answer))
         
         for answer in ["0", "n", "No", "000", "wtf", "1dg6seq112"]:
             with self.subTest("Test for No", answer=answer):
-                self.assertFalse(self.ask.yesno(prompt="Yes?", default=True, input_func=lambda: answer.lower()),
+                self.ask.input_func = lambda: answer.lower()
+                self.assertFalse(self.ask.yesno(prompt="Yes?", default=True),
                                 msg="'{:s}' should be No".format(answer))
         
     
@@ -48,7 +51,8 @@ class TestAskFunctions(unittest.TestCase):
         max = 100
         for i in ["56", " 56   "]:
             with self.subTest("Good numbers", i=i):
-                num, error, msg = self.ask.number("Number?", max, input_func=lambda: i)
+                self.ask.input_func = lambda: i
+                num, error, msg = self.ask.number("Number?", max)
                 self.assertEqual(num, 56, msg="Got wrong number")
                 self.assertFalse(error, msg="'error' param isn't False")
                 self.assertEqual(msg, "", msg="'msg' param not empty string")
@@ -57,23 +61,25 @@ class TestAskFunctions(unittest.TestCase):
         max = 100
         for i in ["56.6", " 56,5   ", "56 56 ", "wtf ", "56wtf", "wtf56"]:
             with self.subTest("Good numbers", i=i):
-                num, error, msg = self.ask.number("Number?", max, input_func=lambda: i)
+                self.ask.input_func = lambda: i
+                num, error, msg = self.ask.number("Number?", max)
                 self.assertEqual(num, -1, msg="Is '{:s}' number?".format(i))
                 self.assertTrue(error, msg="'error' param is False, should be True")
                 self.assertEqual(msg, "Это не число!", msg="'msg' is wrong")
-                
+    
     def test_number_more_than_max(self):
         max = 100
         error_msg = "more than max"
         for i in ["120", " 120   "]:
             with self.subTest("Number more than max", i=i):
-                num, error, msg = self.ask.number("Number?", max, error_msg=error_msg, input_func=lambda: i)
+                self.ask.input_func = lambda: i
+                num, error, msg = self.ask.number("Number?", max, error_msg=error_msg)
                 self.assertEqual(num, max, msg="Is '{:s}' a number?".format(i))
                 self.assertTrue(error, msg="'error' param is False, should be True")
                 self.assertEqual(msg, error_msg, msg="'msg' is wrong")
     
 
-    # ввод распределения зерна
+    # ввод распределения зерна - перенести в маркет
     @unittest.skip("Corn moved to Disrtibute class")
     def test_corn(self):
         max = 1000
