@@ -37,6 +37,7 @@ class Data():
 
         # урожайность в текущем году - 0.5-7
         self.crop_rate = 1
+        self.crop_rate_range = (0.5, 7)
 
         # недовольство, гнев народа
         self.anger = 0

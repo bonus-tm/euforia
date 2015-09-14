@@ -7,7 +7,16 @@ import random
 import data
 
 class Act():
-    """ Разные действия """
+    """ Разные действия
+    Встретить Новый год:
+        записать историю с прошлого года (цены, казну, ресурсы и т.д.)
+        увеличить счётчики
+        рассчитать урожайность нового года
+        определить наличие эмбарго — экономической блокады
+        обновить цены
+        
+    """
+    
     def __init__(self, data, ask):
         self.data = data
         self.ask = ask
@@ -16,6 +25,7 @@ class Act():
     #
     def meet_new_year(self):
         """ Новый год - записать историю, обновить цены """
+        
         self.write_down_history()
     
         self.data.year += 1
@@ -23,7 +33,7 @@ class Act():
         self.data.king_age += 1
         self.data.king_hp -= 1
     
-        self.data.crop_rate = self.ask.frand(0.5, 7)
+        self.data.crop_rate = self.ask.frand(*self.data.crop_rate_range)
     
         self.make_new_prices()
     

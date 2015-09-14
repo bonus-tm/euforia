@@ -11,23 +11,14 @@ class Caravan(Event):
             'pillage': 40,
             'return': 20
         }
-        self.profit_ratio_range = (6, 10)
+        self.profit_ratio_range = (6, 15)
         self.wandering = False
         self.year = 0
         self.investment = 0
         self.profit = 0
         
         super(Caravan, self).__init__(data, say, ask)
-        
-    #
-    def invoke(self):
-        """docstring for invoke"""
-        
-        if self.wandering:
-            self.data.probability['Caravan'] = 100
-        else:
-            self.data.probability['Caravan'] = self.probability['offer']
-        super().invoke()
+    
     
     #   
     def start(self):
@@ -45,7 +36,7 @@ class Caravan(Event):
                     self.rob()
                 else:
                     self.pillage()
-        else:
+        elif self.ask.dice(self.probability['offer']):
             self.dispatch()
     
     #

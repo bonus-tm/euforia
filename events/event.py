@@ -11,17 +11,18 @@ class Event(object):
         self.say = say
         self.ask = ask
     
+    
     #
     def debug(self, msg):
         debug(msg, prefix=self.__class__.__name__)
     
+    
     #
     def invoke(self):
-        """ Запускается каждый раз и проверяет вероятность события """
+        """ Вызывает запуск конкретного события """
         
-        ev = self.__class__.__name__
-        if self.ask.dice(self.data.probability[ev]):
-            self.start()
+        self.start()
+    
     
     #
     def start(self):

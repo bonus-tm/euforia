@@ -43,6 +43,9 @@ events = [
     Caravan(data, say, ask),
 #     Inheritance(),
 #     Church()
+
+# Marriage
+# War
 ]
 
 
